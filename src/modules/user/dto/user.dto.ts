@@ -5,5 +5,14 @@ export class CreateUserDto {
 
   email: string;
 
-  phone: string;
+  phone?: string;
+
+  profilePicture?: string;
+}
+
+export class TokenUserPayload {
+  userId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
 }

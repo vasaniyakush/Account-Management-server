@@ -7,7 +7,6 @@ import {
   OneToMany,
   Relation,
 } from 'typeorm';
-import { Account } from '../account/account.entity';
 
 @Entity()
 export class User {
@@ -24,7 +23,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   phone: string;
 
   @Column({ default: true })
@@ -36,6 +35,11 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column({ nullable: true })
+  profilePicture: string;
+
   @OneToMany(() => Account, (account) => account.user)
   accounts: Relation<Account[]>;
 }
+
+import { Account } from '../account/account.entity';

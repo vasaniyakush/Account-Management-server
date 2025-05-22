@@ -20,7 +20,7 @@ export class Account {
   @Column()
   name: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   note: string;
 
   @Column({
@@ -29,7 +29,7 @@ export class Account {
     scale: 2,
     default: 0,
   })
-  balance: string;
+  balance: number;
 
   @Column({
     type: 'enum',
@@ -47,7 +47,7 @@ export class Account {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.accounts)
   @JoinColumn({ name: 'userId' })
   user: string;
 }
