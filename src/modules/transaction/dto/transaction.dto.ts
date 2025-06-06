@@ -19,11 +19,11 @@ export class CreateTransactionDto {
   @Type(() => Number) // Ensure numeric conversion
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  amount: number;
+  amount: string;
 
   @IsBoolean()
   @IsOptional()
-  visible?: boolean = true;
+  visible?: boolean = false;
 
   @IsEnum(TransactionStatus)
   status: TransactionStatus;
@@ -47,5 +47,45 @@ export class CreateTransactionDto {
   // account2 is required only if type === SELF_DEDUCT
   @ValidateIf((o) => o.type === TransactionType.SELF_DEDUCT)
   @IsUUID()
+  account2?: string;
+}
+
+export class UpdateTransactionDto {
+  @IsEnum(TransactionType)
+  @IsOptional()
+  type?: TransactionType;
+
+  @Type(() => Number) // Ensure numeric conversion
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  @IsOptional()
+  amount?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  visible?: boolean;
+
+  @IsEnum(TransactionStatus)
+  @IsOptional()
+  status?: TransactionStatus;
+
+  @IsString()
+  @IsOptional()
+  message?: string;
+
+  @IsString()
+  @IsOptional()
+  note?: string;
+
+  @IsString()
+  @IsOptional()
+  category?: string;
+
+  @IsUUID()
+  @IsOptional()
+  account1?: string;
+
+  @IsUUID()
+  @IsOptional()
   account2?: string;
 }

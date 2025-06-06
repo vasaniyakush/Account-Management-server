@@ -20,9 +20,9 @@ export class Transaction {
   type: TransactionType;
 
   @Column('numeric', { precision: 10, scale: 2, default: 0 })
-  amount: number;
+  amount: string;
 
-  @Column({ default: true })
+  @Column({ default: false })
   visible: boolean;
 
   @Column({
@@ -41,17 +41,19 @@ export class Transaction {
   @Column({ nullable: true })
   category: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   timestamp: Date;
 
   @ManyToOne(() => Account, {
     eager: true,
+    onDelete: 'CASCADE',
   })
   account1: Account;
 
   @ManyToOne(() => Account, {
     nullable: true,
     eager: true,
+    onDelete: 'NO ACTION',
   })
   account2: Account | null;
 }

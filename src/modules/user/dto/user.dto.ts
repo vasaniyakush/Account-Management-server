@@ -1,3 +1,5 @@
+import { IsEmail, IsUUID } from 'class-validator';
+
 export class CreateUserDto {
   firstName: string;
 
@@ -15,4 +17,9 @@ export class TokenUserPayload {
   email: string;
   firstName: string;
   lastName: string;
+}
+
+export class CreateViewerDto {
+  @IsEmail()
+  viewerEmailId: string;
 }

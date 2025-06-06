@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { AccountType } from './dto/account.enums';
 import { User } from '../user/user.entity';
-
 @Entity()
 export class Account {
   // add auto increment to id
@@ -29,7 +28,7 @@ export class Account {
     scale: 2,
     default: 0,
   })
-  balance: number;
+  balance: string;
 
   @Column({
     type: 'enum',

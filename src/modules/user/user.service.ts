@@ -4,19 +4,32 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/user.dto';
 import { OAuth2Client } from 'google-auth-library';
+import { Viewer } from './viewer.entity';
 @Injectable()
 export class UserService {
   private client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+
+    @InjectRepository(Viewer)
+    private viewersRepository: Repository<Viewer>,
   ) {}
 
   findAll(): Promise<User[]> {
-    return this.usersRepository.find({ relations: ['accounts'] });
+    return this.usersRepository.find({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        profilePicture: true,
+      },
+      where: { isActive: true },
+    });
   }
 
-  findOne(email: string): Promise<User | null> {
+  async findOne(email: string): Promise<User | null> {
     return this.usersRepository.findOne({
       where: { email },
       relations: ['accounts'],
@@ -72,5 +85,47 @@ export class UserService {
       });
       return [newUser, true, newUser.isActive];
     }
+  }
+
+  async getViewers(vieweeId: string): Promise<Viewer[]> {
+    const viewers = await this.viewersRepository.find({
+      where: { viewee: { id: vieweeId } },
+      relations: ['viewer'],
+    });
+    return viewers;
+  }
+
+  async createViewer(viewerId: string, vieweeId: string): Promise<Viewer> {
+    // Check if the viewer already exists
+    const existingViewer = await this.viewersRepository.findOne({
+      where: { viewer: { id: viewerId }, viewee: { id: vieweeId } },
+    });
+    if (existingViewer) {
+      throw new HttpException('Viewer already exists', HttpStatus.BAD_REQUEST);
+    }
+    const viewer = await this.viewersRepository.save({
+      viewer: { id: viewerId },
+      viewee: { id: vieweeId },
+    });
+    return viewer;
+  }
+
+  async deleteViewer(viewerId: string, vieweeId: string): Promise<Viewer> {
+    const viewer = await this.viewersRepository.findOne({
+      where: { viewer: { id: viewerId }, viewee: { id: vieweeId } },
+    });
+    if (!viewer) {
+      throw new HttpException('Viewer not found', HttpStatus.NOT_FOUND);
+    }
+    await this.viewersRepository.remove(viewer);
+    return viewer;
+  }
+
+  async getViewees(viewerId: string): Promise<Viewer[]> {
+    const viewees = await this.viewersRepository.find({
+      where: { viewer: { id: viewerId } },
+      relations: ['viewee'],
+    });
+    return viewees;
   }
 }

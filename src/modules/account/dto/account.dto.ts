@@ -30,3 +30,21 @@ export class CreateAccountDto {
   @IsOptional()
   accountType?: AccountType = AccountType.BANK;
 }
+
+export class UpdateAccountDto {
+  @IsString()
+  @IsOptional()
+  name?: string;
+
+  @IsString()
+  @IsOptional()
+  note?: string;
+
+  @IsEnum(AccountType)
+  @IsOptional()
+  accountType?: AccountType;
+
+  @IsBoolean()
+  @IsOptional()
+  isActive?: boolean;
+}
