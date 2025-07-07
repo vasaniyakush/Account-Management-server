@@ -1,5 +1,5 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
-import morgan from 'morgan';
+import * as morgan from 'morgan';
 import { Request, Response, NextFunction } from 'express';
 
 interface RequestCustom extends Request {
@@ -8,12 +8,14 @@ interface RequestCustom extends Request {
     email: string;
   };
 }
+const logger = (morgan as any).default || morgan;
+
 @Injectable()
 export class HttpLoggerMiddleware implements NestMiddleware {
   private readonly logger = new Logger(HttpLoggerMiddleware.name);
 
   use(req: RequestCustom, res: Response, next: NextFunction) {
-    morgan(
+    logger(
       ':remote-addr :method :url :status :res[content-length] :response-time ms',
       {
         stream: {
