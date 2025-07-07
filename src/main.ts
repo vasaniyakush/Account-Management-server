@@ -10,6 +10,8 @@ async function bootstrap() {
       `http://localhost:3000`,
       'https://your-frontend.com',
       'http://192.168.1.7:3000',
+      'https://api.xpnse-diary.vasaniyakush.me',
+      'https://account-management-server-7jvo.onrender.com',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
