@@ -38,6 +38,9 @@ import { AuthMiddleware } from './modules/auth/auth.middleware';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
+      ssl: {
+        rejectUnauthorized: false, // For RDS default cert, or you can provide a proper CA if needed
+      },
       entities: [User, Account, Transaction, Viewer],
       synchronize: true,
       autoLoadEntities: true,
