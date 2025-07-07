@@ -29,6 +29,10 @@ export class CreateAccountDto {
   @IsEnum(AccountType)
   @IsOptional()
   accountType?: AccountType = AccountType.BANK;
+
+  @IsBoolean()
+  @IsOptional()
+  isVisible?: boolean = true;
 }
 
 export class UpdateAccountDto {
@@ -47,4 +51,8 @@ export class UpdateAccountDto {
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  isVisible?: boolean;
 }

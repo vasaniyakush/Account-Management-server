@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Account } from '../account/account.entity';
 import { TransactionStatus, TransactionType } from './dto/transaction.enum';

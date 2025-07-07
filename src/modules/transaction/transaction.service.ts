@@ -74,9 +74,9 @@ export class TransactionService {
 
       // If transaction type is SELF_DEDUCT, we need to add the amount to account2
       if (transactionBody.type == TransactionType.SELF_DEDUCT) {
-        if (transactionBody.account2) {
+        if (!transactionBody.account2 || transactionBody.account2 == '') {
           throw new Error(
-            'Account2 should not be provided for SELF_DEDUCT transaction',
+            'Account2 should be provided for SELF_DEDUCT transaction',
           );
         }
         const account2 = await queryRunner.manager.findOne(Account, {

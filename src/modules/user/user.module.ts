@@ -6,9 +6,10 @@ import { User as UserEntity } from './user.entity';
 import { Account } from '../account/account.entity';
 import { AuthModule } from '../auth/auth.module';
 import { Viewer } from './viewer.entity';
+import { Transaction } from '../transaction/transaction.entity';
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, Account, Viewer]),
+    TypeOrmModule.forFeature([UserEntity, Account, Viewer, Transaction]),
     AuthModule,
   ],
   controllers: [UserController],

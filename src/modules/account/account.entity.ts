@@ -40,6 +40,9 @@ export class Account {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: false })
+  isVisible: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

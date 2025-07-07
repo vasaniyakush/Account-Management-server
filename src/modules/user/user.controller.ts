@@ -8,6 +8,7 @@ import {
   Param,
   Query,
   Delete,
+  Headers,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
@@ -35,7 +36,8 @@ export class UserController {
   }
 
   @Post('auth/google')
-  async googleAuth(@Query('idToken') idToken: string) {
+  async googleAuth(@Headers('Authorization') authHeader: string) {
+    const idToken = authHeader.split(' ')[1];
     try {
       const [user, created, isVerified] =
         await this.userService.googleAuth(idToken);
@@ -157,6 +159,21 @@ export class UserController {
     } catch (error) {
       throw new HttpException(
         'Failed to delete viewee. ' + error.message,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  // Summary
+  @Get('summary')
+  async getSummary(@CurrentUser() user: TokenUserPayload) {
+    try {
+      const summary = await this.userService.getSummary(user.userId);
+      return summary;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Failed to fetch summary. ' + error.message,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
