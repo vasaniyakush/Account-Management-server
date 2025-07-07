@@ -1,16 +1,21 @@
-import { IsEmail, IsUUID } from 'class-validator';
+import { IsEmail, IsString, IsUUID } from 'class-validator';
 import { Account } from 'src/modules/account/account.entity';
 import { Transaction } from 'src/modules/transaction/transaction.entity';
 
 export class CreateUserDto {
+  @IsString()
   firstName: string;
 
+  @IsString()
   lastName: string;
 
+  @IsEmail()
   email: string;
 
+  @IsString()
   phone?: string;
 
+  @IsString()
   profilePicture?: string;
 }
 
